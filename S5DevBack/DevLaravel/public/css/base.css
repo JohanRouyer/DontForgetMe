@@ -9,10 +9,12 @@ body {
     background-color: #eeeeff; /* Couleur de fond pour le body */
 }
 
+/*
 .active {
     color: #1c1b19;
     font-weight: bold;
 }
+*/
 
 .container {
     max-width: 90vh;
@@ -74,10 +76,12 @@ nav ul {
     padding: 0;
 }
 
+/*
 nav ul li {
     display: inline-flex;
     margin-right: 20px;
 }
+*/
 
 nav ul li a {
     text-decoration: none;
@@ -97,8 +101,6 @@ nav ul li a:hover {
 }
 
 .logo img {
-    max-width: 100px;
-    margin-right: 10px;
     transition: transform 0.3s;
 }
 
