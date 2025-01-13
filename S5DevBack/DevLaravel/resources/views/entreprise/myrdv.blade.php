@@ -60,7 +60,7 @@
                 </div>
                 <div class="container visible-container rdv-container">
                     <div class="rdv-image"><img width="120px" height="90px" src="images/rdv.png"></div>
-                    <a href="entreprise-profile.html" class="rdv-info">
+                    <a href="#" class="rdv-info">
                         <div>
                             <div class="rdv-title">Paradis Grill</div>
                             <div>Coiffeur</div>

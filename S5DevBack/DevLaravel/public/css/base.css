@@ -211,7 +211,7 @@ nav ul li a:hover {
 .res {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 6px;
     padding: 20px;
     width: 300px;
     margin: 0 10px 20px 10px; /* Espacement entre les cartes */
@@ -234,7 +234,7 @@ nav ul li a:hover {
 .res-header a {
     position: relative;
     top: -20px;
-    left: 260px;
+    left: 220px;
 }
 
 .trash{
@@ -485,6 +485,7 @@ nav ul li a:hover {
 
 /* Styles pour le formulaire de res */
 .res-form {
+    padding-top: 100px;
     max-width: 500px; /* Largeur maximale du formulaire */
     margin: 0 auto; /* Centre le formulaire horizontalement */
 }

@@ -4,6 +4,7 @@
 
 @section('content')
 
+<div class="container-fluid page-body">
     <div class="res-details">
     <p><a href="{{ route('entreprise.show', ['entreprise' => $entreprise->id-1]) }}"><strong><</strong></a>
      | 
@@ -26,9 +27,9 @@
                 @endif
             </div>
             @if (count($entreprise->plages) >= 1)
-            <ul>
+            <div>
             @foreach ($entreprise->plages as $plage)
-            <li>
+            <div>
                 <br/>
                 <p>Id plage : <strong>{{ $plage->id }}</strong></p><br/>
                 <div class="info">
@@ -37,12 +38,13 @@
                     <p><i>intervalle :</i> {{ $plage->intervalle }}</p>
                     <p><i>planTables :</i> {{ $plage->planTables }}</p>
                 </div>
-            </li>   
+            </div>   
             @endforeach
-            </ul>
+            </div>
             @endif
         </div>
         
     </div>
+</div>
 
 @endsection

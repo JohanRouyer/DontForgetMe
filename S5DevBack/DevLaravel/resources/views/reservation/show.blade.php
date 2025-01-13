@@ -4,6 +4,7 @@
 
 @section('content')
 
+<div class="container-fluid page-body">
     <div class="res-details">
     <p><a href="{{ route('reservation.show', ['reservation' => $reservation->id-1]) }}"><strong><</strong></a>
      | 
@@ -31,9 +32,9 @@
                 <p><strong>nbPersonnes:</strong> {{ $reservation->nbPersonnes }}</p>
             </div>
             @if (count($reservation->notifications) >= 1)
-            <ul>
+            <div>
             @foreach ($reservation->notifications as $notif)
-            <li>
+            <div>
                 <br/>
                 <p>Id notif : <strong>{{ $notif->id }}</strong></p><br/>
                 <div class="info">
@@ -42,12 +43,13 @@
                     <p><i>État :</i> {{ $notif->etat }}</p>
                     <p><i>Contenu :</i> {{ $notif->contenu }}</p>
                 </div>
-            </li>   
+            </div>   
             @endforeach
-            </ul>
+        </div>
             @endif
         </div>
         
     </div>
+</div>
 
 @endsection
