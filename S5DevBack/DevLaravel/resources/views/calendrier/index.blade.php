@@ -15,7 +15,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.js"></script>
     <!-- Import FullCalendar locales CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale-all.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/base.css') }}">
   
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -41,9 +40,26 @@
 
 </head>
 <body>
-  
-<div class="containerCalendar">
-    <h1>Calendrier des créneaux</h1>
+
+<div class="container-fluid page-body">
+    <div class="secondary-nav nav row">
+        <p>
+        @guest
+        @else
+          <a href="{{ route('parametrage.index') }}" class="secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
+        @endguest
+          <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
+          <a href="{{ route('entreprise.index') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+          <a class="secondary-nav-tab current-secondary-nav-tab @yield('creneau_active')">Créneaux</a>
+        </p>
+    </div>
+
+    <div class="containerCalendar">
+
+
+    <div class="container">
+        <h2><b>Calendrier des créneaux</b></h2>
+    </div>
     <div id='calendar'></div>
 
     <!-- Popup Dialog Select -->

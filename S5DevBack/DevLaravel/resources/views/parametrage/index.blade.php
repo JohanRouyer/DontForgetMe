@@ -25,33 +25,47 @@
 
 </head>
 <body>
-  
-<div class="container">
-    <div style="border-bottom: 2px blue;">
-        <h1 >Les entreprises dans lesquels vous travaillez</h1>
-        <br/>
+
+    <div class="container-fluid page-body">
+        <div class="secondary-nav nav row">
+            <p>
+            @guest
+            @else
+              <a class="secondary-nav-tab current-secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
+            @endguest
+              <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
+              <a href="{{ route('entreprise.index') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+              <a href="{{ route('calendrier.index') }}" class="secondary-nav-tab @yield('creneau_active')">Créneaux</a>
+            </p>
+        </div>
+        <div class="container">
+            <div style="border-bottom: 2px blue;">
+                <h1 >Les entreprises dans lesquels vous travaillez</h1>
+                <br/>
+            </div>
+            <div class="containerEntreprise">
+                @foreach (Auth::user()->travailler_entreprises as $entreprise)
+                <div class="entreprise" id="entreprise{{$entreprise->id}}">
+                    <h2>{{ $entreprise->libelle }}</h2>
+                    <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
+                    {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
+                        <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
+                    @endif --}}
+                    @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
+                        <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
+                    @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
+                        <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
+                    @else
+                        <p ><i>Vous êtes invité dans cette entreprise :</i></p>
+                        <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
+                        <a onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
+                    @endif
+                </div>
+                @endforeach
+            </div>
+        </div>
     </div>
-    <div class="containerEntreprise">
-    @foreach (Auth::user()->travailler_entreprises as $entreprise)
-    <div class="entreprise" id="entreprise{{$entreprise->id}}">
-        <h2>{{ $entreprise->libelle }}</h2>
-        <p><strong>Adresse : </strong>{{ $entreprise->adresse }}</p>
-        {{-- @if (Auth::user()->id == $entreprise->user_id) // Cas créateur
-            <p style="color:blue;"><strong>Vous êtes le propriétaire de cette entreprise</strong></p>
-        @endif --}}
-        @if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin')
-            <a class="btn btn-primary" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Paramétrer les plages</a>
-        @elseif (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé')
-            <a class="btn btn-primary light" href="{{ route('parametrage.plage.idEntreprise', ['entreprise' => $entreprise->id]) }}">Visualiser vos plages</a>
-        @else
-            <p ><i>Vous êtes invité dans cette entreprise :</i></p>
-            <a onclick="accepterInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary accept">Accepter l'invitation</a>
-            <a onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
-        @endif
-    </div>
-    @endforeach
-    </div>
-<div>
+
 
 
     <script>

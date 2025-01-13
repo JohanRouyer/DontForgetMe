@@ -4,7 +4,18 @@
 @section('entreprises_active', 'active')
 
 @section('content')
-
+<div class="container-fluid page-body">
+    <div class="secondary-nav nav row">
+        <p>
+        @guest
+        @else
+          <a href="{{ route('parametrage.index') }}" class="secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
+        @endguest
+          <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
+          <a class="secondary-nav-tab current-secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+          <a href="{{ route('calendrier.index') }}" class="secondary-nav-tab @yield('creneau_active')">Créneaux</a>
+        </p>
+    </div>
     <div class="res-container">
         @foreach ($entreprises as $entreprise)
             <div class="res">
@@ -17,7 +28,7 @@
                     <p><strong>Type :</strong> {{ $entreprise->type }}</p>
                     <p><strong>Numéro de téléphone :</strong> {{ $entreprise->numTel }}</p>
                     <p><strong>email :</strong> {{ $entreprise->email }}</p>
-                    <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="300vh" width="300vh">
+                    <img src="{{ json_decode($entreprise->cheminImg)[0] }}" alt="{{ $entreprise->libelle }}" height="260vh" width="260vh">
                     @if($entreprise->publier)
                     <p><strong>Publié !</strong></p>
                     @endif
@@ -26,7 +37,7 @@
             </div>
         @endforeach
     </div>
-
+</div>
     {{ $entreprises -> links() }}
-    
+
 @endsection

@@ -34,4 +34,9 @@ class entrepriseController extends Controller
             'entreprise' => $entreprise
         ]);
     }
+    
+    public function myrdv()
+    {
+        return view('entreprise.myrdv');
+    }
 }

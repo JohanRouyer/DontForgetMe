@@ -62,6 +62,8 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
     Route::get('/{entreprise}', 'show')->where([
         'id' => '[0-9]+',
     ])->name('show');
+
+    Route::get('/myrdv', 'myrdv')->name('myrdv');
 });
 
 Route::get('/', function () {
