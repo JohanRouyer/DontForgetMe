@@ -62,8 +62,6 @@ Route::prefix('/entreprise')->name('entreprise.')->controller(entrepriseControll
     Route::get('/{entreprise}', 'show')->where([
         'id' => '[0-9]+',
     ])->name('show');
-
-    Route::get('/myrdv', 'myrdv')->name('myrdv');
 });
 
 Route::get('/', function () {
@@ -73,6 +71,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/myrdv', [App\Http\Controllers\MyRdvController::class, 'index'])->name('myrdv');
 
 Route::prefix('/register')->name('register.')->controller(RegisterController::class)->group(function() {
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
@@ -91,4 +91,5 @@ Route::prefix('/register')->name('register.')->controller(RegisterController::cl
 
     Route::post('/company/submit', [RegisterController::class, 'submit'])->name('company.register.submit');
 });
+
 

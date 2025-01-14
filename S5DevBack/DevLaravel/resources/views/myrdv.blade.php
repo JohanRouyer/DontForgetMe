@@ -11,6 +11,17 @@
 @endif
     <!-- Corps -->
     <div class="container-fluid page-body">
+        <div class="secondary-nav nav row">
+            <p>
+            @guest
+            @else
+              <a href="{{ route('parametrage.index') }}" class="secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
+            @endguest
+              <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
+              <a href="{{ route('entreprise.index') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+              <a href="{{ route('calendrier.index') }}" class="secondary-nav-tab @yield('creneau_active')">Créneaux</a>
+            </p>
+        </div>
         <div class="container">
             <div class="container">
                 <h2><b>Mes rendez-vous</b></h2>
@@ -85,7 +96,7 @@
 
     <!-- FOOTER -->
     <div class="footer">
-        <a href="index.html">Retour à l'accueil</a>
+        <a href="{{ route('home') }}">Retour à l'accueil</a>
     </div>
 
     @endsection
