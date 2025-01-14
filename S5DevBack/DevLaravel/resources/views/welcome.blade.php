@@ -3,6 +3,8 @@
 @section('home_active', 'active')
 @section('title', 'Don\'t Forget Me')
 
+
+
 @section('content')
     {{-- <div class="container"> --}}
         <div class="row justify-content-center">
@@ -126,12 +128,6 @@
                             </a>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    {{-- </div> --}}
-@endsection
-
 {{--
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">

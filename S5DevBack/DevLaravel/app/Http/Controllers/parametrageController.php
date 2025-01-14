@@ -85,6 +85,63 @@ class parametrageController extends Controller
     }
 
     /**
+     * Méthode index pour afficher la vue principale (planification des plages)
+     *
+     * @return response()
+     */
+    public function indexPlageAsEmploye(Request $request, Entreprise $entreprise, Activite $activite)
+    {
+      // Pour récupérer les données
+      if($request->ajax()) {
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut != 'Invité') {
+          // Requête pour récupérer les plages spécifique à l'activité et à l'entreprise choisie
+          $activites = Activite::where('id', $activite->id)->where('idEntreprise', $entreprise->id)->first();
+
+            if ($activites) {
+                $plageIds = $activites->plages()->pluck('idPlage');
+                $data = Plage::whereIn('id', $plageIds)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+                return response()->json($data);
+            } else {
+                // Handle the case where the activite is not found
+                return response()->json(['error' => 'Activite not found'], 404);
+            }
+        }
+        /* // Cas employé
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé') {
+          // Requête pour récupérer les plages
+          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          return response()->json($data);
+        }
+        elseif(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
+          // Requête pour récupérer les plages
+          $data = Plage::where('entreprise_id', $entreprise->id)->get(['id', 'heureDeb', 'heureFin', 'datePlage', 'interval']);
+          return response()->json($data);
+        } */
+      }
+      // Vérification utilisateur travaille
+      if (!Auth::check()) {
+          return redirect()->route('login');
+      }
+      else if (Auth::user()->travailler_entreprises->where('id', $entreprise->id)->isEmpty()) {
+        return redirect()->route('parametrage.index');
+      }
+      else {
+        if(Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Employé' || Auth::user()->travailler_entreprises->where('id', $entreprise->id)->first()->pivot->statut == 'Admin') {
+          // Sinon on renvoie la vue admin
+          return view('plage.show', [
+              'user' => Auth::user(),
+              'entreprise' => $entreprise,
+              'activite' => $activite,
+          ]);
+        }
+        else {
+          // Sinon erreur normalement non atteint
+          return redirect()->route('parametrage.index');
+        }
+      }
+    }
+
+    /**
      * Méthode invit qui traite la réponse à une invitation
      *
      * @return response()

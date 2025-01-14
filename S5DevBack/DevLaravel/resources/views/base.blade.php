@@ -27,9 +27,18 @@
     <!-- Pour les notifications -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> <!-- JQuery -->
+
+    <!-- Pour les carousel -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Pour les icones -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
-
 <div class="header container-fluid sticky-top">
   <nav class="nav row d-md-none">
     <div class="nav1 col-6">
@@ -224,15 +233,22 @@
             <li><a href="{{ route('myrdv') }}" class="@yield('catalogue_active')">Réservations</a></li>
             <li><a href="{{ route('entreprise.index') }}" class="@yield('entreprises_active')">Entreprises</a></li>
             <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li>
+
+{{--
+            <li><a href="/" class="@yield('home_active')"><i class="fa fa-home"></i> Accueil</a></li>
+            <li><a href="{{ route('reservation.index') }}" class="@yield('catalogue_active')"><i class="fa fa-book"></i> Mes Réservations</a></li>
+            <li><a href="{{ route('entreprise.indexUser') }}" class="@yield('entreprises_active')"><i class="fa fa-industry"></i> Mes Entreprises</a></li>
+            <li><a href="{{ route('calendrier.index') }}" class="@yield('creneau_active')">Créneaux</a></li> --}}
             @guest
             @else
-              <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')">Paramétrer vos plannings</a></li>
+              <li><a href="{{ route('parametrage.index') }}" class="@yield('parametrage_active')"><i class="fa fa-calendar"></i> Paramétrer vos plannings</a></li>
             @endguest
+            <li><a href="{{ route('reserver.index') }}" class="@yield('reserver_active')"><i class="fa fa-calendar-plus"></i> Réserver</a></li>
         </ul>
     </nav>
 -->
 
-    <!-- <div class="burger-menu">
+    {{-- <div class="burger-menu">
         <button class="hamburger hamburger--collapse" type="button">
             <span class="hamburger-box">
                 <span class="hamburger-inner"></span>
@@ -350,24 +366,28 @@
             [i].classList.remove("show-menu");
         }
       });
-    </script> -->
+    </script> --}}
 
 
   <!-- 
     <div class="profileInfo">
     @guest
             @if (Route::has('login'))
-                    <a href="{{ route('login') }}">{{ __('Login') }}</a>
+                    
+                    <a href="{{ route('login') }}"><i class="bi bi-box-arrow-in-right"></i> {{ __('Login') }}</a>
             @endif
 
             @if (Route::has('register'))
-                    <a class="nav-link" href="{{ route('register.choose.account.type') }}">{{ __('Register') }}</a>
+                    
+                    <a class="nav-link" href="{{ route('register.choose.account.type') }}"><i class="fa fa-user-plus"></i> {{ __('Register') }}</a>
             @endif
         @else
-            <a class="nameProfil" href="#">{{-- href="{{ route('profil.index') }}" --}}
+            <a class="nameProfil @yield('profile_active')" href="{{ route('profile.index') }}">
+              <i class="fa fa-user"></i>
               {{ Auth::user()->nom }}
             </a>
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <i class="bi bi-box-arrow-right"></i>
                   {{ __('Logout') }}
             </a>
 
@@ -375,15 +395,16 @@
               @csrf
             </form>
       @endguest
-      <a href="/" class="logo">
+      <a href="{{ route('home') }}" class="logo">
         <img src="{{ asset('favicon.ico') }}" alt="Logo">
       </a>
       </div>
 -->
     
 </div>
-
-
+{{--
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+--}}
 {{-- <div class="card-header">{{ __('Dashboard') }}</div>
         <div class="card-body">
             @if (session('status'))
@@ -454,10 +475,8 @@ function displayErrorWithButton(message) {
         toastr.error("{{ session('error') }}");
     </script>
 @endif
-{{-- 
-<div class="container">   --}}
-    @yield('content'){{-- 
-</div> --}}
+    @yield('content')
+</div>
 
 </body>
 </html>
