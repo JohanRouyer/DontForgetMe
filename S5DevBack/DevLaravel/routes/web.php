@@ -74,6 +74,12 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::get('/myrdv', [App\Http\Controllers\MyRdvController::class, 'index'])->name('myrdv');
 
+Route::prefix('/user')->name('user.')->controller(userController::class)->group(function(){
+
+    Route::get('/', 'index')->name('index');
+
+});
+
 Route::prefix('/register')->name('register.')->controller(RegisterController::class)->group(function() {
     Route::get('/choose-account-type', [RegisterController::class, 'showChoicePage'])->name('choose.account.type');
     
