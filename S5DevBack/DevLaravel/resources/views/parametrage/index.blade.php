@@ -64,6 +64,12 @@
                 @endforeach
             </div>
         </div>
+--}}
+  
+<div class="container">
+    <div style="border-bottom: 2px blue;">
+        <h1 >Les entreprises dans lesquels vous travaillez</h1>
+        <br/>
     </div>
     <div class="containerEntreprise">
     @foreach (Auth::user()->travailler_entreprises->unique() as $entreprise)

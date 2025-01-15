@@ -63,11 +63,6 @@
     </div>
 </div>
     {{ $reservations -> links() }}
-
-<<<<<<< HEAD
 @endsection
-=======
     @endif
-    
 @endsection
->>>>>>> c519ecf038b525f52f7138474511480b80002fd2
