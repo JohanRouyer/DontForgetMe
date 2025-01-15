@@ -41,7 +41,7 @@
 </head>
 <body>
 
-<div class="container-fluid page-body">
+<div class="container-fluid ">
     <div class="secondary-nav nav row">
         <p>
         @guest
@@ -49,7 +49,7 @@
           <a href="{{ route('parametrage.index') }}" class="secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
         @endguest
           <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
-          <a href="{{ route('entreprise.index') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+          <a href="{{ route('entreprise.indexUser') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
           <a class="secondary-nav-tab current-secondary-nav-tab @yield('creneau_active')">Créneaux</a>
         </p>
     </div>

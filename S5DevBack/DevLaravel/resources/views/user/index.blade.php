@@ -1,6 +1,6 @@
 @extends('base')
 
-@section('title', 'Display resa')
+@section('title', Auth::user()->nom . ' ' . Auth::user()->prenom)
 @section('catalogue_active', 'active')
 
 @section('content')
@@ -11,7 +11,8 @@
 @endif
 
     <!-- Corps -->
-    <div class="container-fluid page-body">
+{{-- 
+    <div class="container-fluid ">
         <div class="container">
             <div class="back-button">
                 <a href="{{ route('home') }}">
@@ -62,3 +63,42 @@
     </div>
 
     @endsection
+--}}
+
+@section('title', Auth::user()->nom . ' ' . Auth::user()->prenom)
+@section('profile_active', 'active')
+
+@section('content')
+
+<div class="secondary-nav nav row">
+    <p>
+    @guest
+    @else
+      <a href="{{ route('parametrage.index') }}" class="secondary-nav-tab @yield('parametrage_active')">Paramétrer vos plannings</a> | 
+    @endguest
+      <a href="{{ route('reservation.index') }}" class="secondary-nav-tab @yield('catalogue_active')">Réservations</a> | 
+      <a href="{{ route('entreprise.indexUser') }}" class="secondary-nav-tab @yield('entreprises_active')">Entreprises</a> | 
+      <a href="{{ route('calendrier.index') }}" class="secondary-nav-tab @yield('creneau_active')">Créneaux</a>
+    </p>
+</div>
+<div class="container">
+    <div style="border-bottom: 2px #1dacff solid;">
+        <h1 >Votre profil</h1>
+        <br/>
+    </div>
+    <div class="containerEntreprise">
+    <div class="entreprise" id="profil">
+        <h2>{{ $utilisateur->nom }} {{ $utilisateur->prenom }}</h2>
+        <p><strong>Email : </strong>{{ $utilisateur->email }}</p>
+        <p><strong>Numéro de téléphone : </strong>{{ $utilisateur->numTel }}</p>
+        <p><strong>Notification par défaut : </strong>{{ $utilisateur->typeNotif }}</p>
+        <p><strong>Delai avant notification par défaut : </strong>{{ $utilisateur->delaiAvantNotif }}</p>
+        @if ($utilisateur->superadmin)
+            <h4><strong>Superadmin</strong></h4>
+        @endif
+    </div>
+    <a class="btn btn-primary" href="{{ route('register.company.register.company') }}" style="margin:auto;"><i class="fa fa-plus"></i> Créer une entreprise</a>
+    </div>
+<div>
+
+@endsection

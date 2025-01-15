@@ -4,11 +4,11 @@
 
 @section('content')
 
-<div class="container-fluid page-body">
+<div class="container-fluid ">
     <div class="res-details">
-    <p><a href="{{ route('reservation.show', ['reservation' => $reservation->id-1]) }}"><strong><</strong></a>
+    <p><a href="{{ route('reservation.show', ['reservation' => $reservation->id-1]) }}"><strong></strong></a>
      | 
-    <a href="{{ route('reservation.show', ['reservation' => $reservation->id+1]) }}"><strong>></p></strong></a>
+    <a href="{{ route('reservation.show', ['reservation' => $reservation->id+1]) }}"><strong></p></strong></a>
         <div class="res-details-header"> 
             <h1>Id réservation : {{ $reservation->id }}</h1>
             @auth

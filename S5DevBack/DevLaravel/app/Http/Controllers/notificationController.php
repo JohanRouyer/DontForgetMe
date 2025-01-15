@@ -19,9 +19,9 @@ class notificationController extends Controller
                 'users.prenom AS userPrenom',
                 'users.numTel AS userNumTel',
                 'users.email AS userEmail',
-                'effectuer.typeNotif AS typeNotification',
                 'entreprises.libelle AS entrepriseNom',
-                'reservations.dateRdv AS heureRendezVous',
+                'reservations.dateRdv AS dateRendezVous',
+                'reservations.heureDeb AS heureRendezVous',
 
                 DB::raw('(SELECT n.id
                   FROM notifications n
@@ -29,6 +29,13 @@ class notificationController extends Controller
                   ORDER BY n.id ASC
                   LIMIT 1
         ) AS notifId'),
+
+                DB::raw('(SELECT n.categorie
+                  FROM notifications n
+                  WHERE n.reservation_id = reservations.id
+                  ORDER BY n.id ASC
+                  LIMIT 1
+        ) AS notifCategorie'),
 
                 DB::raw('(SELECT n.etat
                   FROM notifications n
