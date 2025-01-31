@@ -26,13 +26,15 @@
             {{-- Section 2 : Informations générales --}}
             <div class="mb-4">
                 <h3>Informations générales</h3>
-                <div class="mb-2">
-                    <label for="libelle">Nom de l'entreprise</label>
-                    <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label for="siren">SIREN</label>
-                    <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
+                <div class="row">
+                    <div class="col-lg-6 mb-2">
+                        <label for="libelle">Nom de l'entreprise</label>
+                        <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
+                    </div>
+                    <div class="col-lg-6 mb-2">
+                        <label for="siren">SIREN</label>
+                        <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
+                    </div>
                 </div>
                 <div class="mb-2">
                     <label for="rue">Rue</label>
@@ -40,29 +42,34 @@
                            value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}" 
                            class="form-control" required>
                 </div>
-                <div class="mb-2">
-                    <label for="codePostal">Code postal</label>
-                    <input type="text" name="codePostal" id="codePostal" 
-                           value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}" 
-                           class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label for="ville">Ville</label>
-                    <input type="text" name="ville" id="ville" 
-                           value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}" 
-                           class="form-control" required>
+                <div class="row">
+                    <div class="col-lg-6 mb-2">
+                        <label for="codePostal">Code postal</label>
+                        <input type="text" name="codePostal" id="codePostal" 
+                            value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}" 
+                            class="form-control" required>
+                    </div>
+                    
+                    <div class="col-lg-6 mb-2">
+                        <label for="ville">Ville</label>
+                        <input type="text" name="ville" id="ville" 
+                            value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}" 
+                            class="form-control" required>
+                    </div>
                 </div>
                 <div class="mb-2">
                     <label for="description">Description</label>
                     <textarea name="description" id="description" class="form-control" rows="4">{{ $entreprise->description }}</textarea>
                 </div>
-                <div class="mb-2">
-                    <label for="email">Adresse email</label>
-                    <input type="email" name="email" id="email" value="{{ $entreprise->email }}" class="form-control" required>
-                </div>
-                <div class="mb-2">
-                    <label for="numTel">Numéro de téléphone</label>
-                    <input type="text" name="numTel" id="numTel" value="{{ $entreprise->numTel }}" class="form-control" required>
+                <div class="row">
+                    <div class="col-lg-6 mb-2">
+                        <label for="email">Adresse email</label>
+                        <input type="email" name="email" id="email" value="{{ $entreprise->email }}" class="form-control" required>
+                    </div>
+                    <div class="col-lg-6 mb-2">
+                        <label for="numTel">Numéro de téléphone</label>
+                        <input type="text" name="numTel" id="numTel" value="{{ $entreprise->numTel }}" class="form-control" required>
+                    </div>
                 </div>
             </div>
 
