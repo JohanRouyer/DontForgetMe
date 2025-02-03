@@ -4,13 +4,16 @@
 
 @section('content')
     <div class="container">
-        <h1>Modifier l'entreprise</h1>
+        <div class="header-profile">
+            <h1>Modifier l'entreprise</h1>
+            <br/>
+        </div>
         <form action="{{ route('entreprise.update', ['entreprise' => $entreprise->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
             {{-- Section 1 : Images --}}
-            <div class="mb-4">
+            <div class="mt-3 mb-4">
                 <h3>Images</h3>
                 @if($entreprise->cheminImg)
                     <img src="{{ json_decode($entreprise->cheminImg)[0] }}" style="display: block; margin:auto;" alt="{{ $entreprise->libelle }}" height="100vh" width="100vh">
@@ -27,46 +30,46 @@
             <div class="mb-4">
                 <h3>Informations générales</h3>
                 <div class="row">
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-lg-6 mb-3">
                         <label for="libelle">Nom de l'entreprise</label>
                         <input type="text" name="libelle" id="libelle" value="{{ $entreprise->libelle }}" class="form-control" required>
                     </div>
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-lg-6 mb-3">
                         <label for="siren">SIREN</label>
                         <input type="text" name="siren" id="siren" value="{{ $entreprise->siren }}" class="form-control" required>
                     </div>
                 </div>
-                <div class="mb-2">
+                <div class="mb-3">
                     <label for="rue">Rue</label>
                     <input type="text" name="rue" id="rue" 
                            value="{{ explode(',', $entreprise->adresse)[0] ?? '' }}" 
                            class="form-control" required>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-md-5 mb-3">
                         <label for="codePostal">Code postal</label>
                         <input type="text" name="codePostal" id="codePostal" 
                             value="{{ explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? ''))[0] ?? '' }}" 
                             class="form-control" required>
                     </div>
                     
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-md-7 mb-3">
                         <label for="ville">Ville</label>
                         <input type="text" name="ville" id="ville" 
                             value="{{ implode(' ', array_slice(explode(' ', trim(explode(',', $entreprise->adresse)[1] ?? '')), 1)) }}" 
                             class="form-control" required>
                     </div>
                 </div>
-                <div class="mb-2">
-                    <label for="description">Description</label>
+                <div class="mb-3">
+                    <label for="description">Description (255 caractères maximum)</label>
                     <textarea name="description" id="description" class="form-control" rows="4">{{ $entreprise->description }}</textarea>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-lg-6 mb-3">
                         <label for="email">Adresse email</label>
                         <input type="email" name="email" id="email" value="{{ $entreprise->email }}" class="form-control" required>
                     </div>
-                    <div class="col-lg-6 mb-2">
+                    <div class="col-lg-6 mb-3">
                         <label for="numTel">Numéro de téléphone</label>
                         <input type="text" name="numTel" id="numTel" value="{{ $entreprise->numTel }}" class="form-control" required>
                     </div>

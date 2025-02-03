@@ -11,7 +11,7 @@
         <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
     </head>
 
-    <div class="container">
+    <div class="container" style="min-width: 300px;">
         @php
          $isAdmin = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Admin')->first() != null;
          $isInvite = $entreprise->travailler_users()->wherePivot('idUser',Auth::user()->id)->wherePivot('statut','Invité')->first() != null;
@@ -20,16 +20,13 @@
             <i class="fa fa-arrow-left fa-lg" style="color: #000000;"></i>
         </a>
         <div class="header-profile" style="margin-top: 1rem;"> 
-            @if ($isAdmin)
-            <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-primary">Modifier</a>
-            @endif
             <div class="containerEntreprise"> 
                 <h1>Entreprise : {{ $entreprise->libelle }}</h1> 
                 <br/>
             </div>
         </div>
         <div class="entreprise">
-            <div class="row res-details-info" style="display: inline-flex; width: 100%;">
+            <div class="row res-details-info mt-4" style="display: inline-flex; width: 100%;">
                 <div class="col-sm-7 col-md-8 col-lg-9" style="display: block; margin:auto; margin-left: 0px;">
                 <p><strong>Siren :</strong> {{ $entreprise->siren }}</p>
                 <p><strong>Adresse :</strong> {{ $entreprise->adresse }}</p>
@@ -47,10 +44,13 @@
                 @endif
                 </div>
             </div>
+            @if ($isAdmin)
+            <a href="{{ route('entreprise.edit', ['entreprise' => $entreprise->id]) }}" class="btn btn-secondary" style="margin-left:1%; margin-block:0.5rem;">Modifier le profil</a>
+            @endif
             @if($entreprise->publier)
                 <p><strong>Publié !</strong></p>
-                <div style="display: inline-flex; width: 100%;">
-                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:1%;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
+                <div class="flex-wrap" style="display: inline-flex; margin-left:1%;">
+                <a class="btn btn-primary light" href="{{ route('entreprise.activites', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:10px;"><i class="bi bi-calendar-plus"></i> Réserver une activité</a>
                 @if ($isAdmin)
                 <a class="btn btn-primary light" href="{{ route('entreprise.services.index', ['entreprise' => $entreprise->id]) }}" style="display:block; margin-left:0px;margin-right:auto;"><i class="bi bi-tools"></i> Gérer les activités</a>
                 @elseif(!$isInvite)
@@ -68,13 +68,10 @@
                 <a style="margin:auto; margin-left:0px;" onclick="refuserInvit({{$entreprise->id}},'{{$entreprise->libelle}}')" class="btn btn-primary reject">Refuser l'invitation</a>
             </div>
             @endif
-            <div style="display: inline-flex; width: 100%;margin-top: 15px;">
+            <div style="display: inline-flex; width: 100%;margin-top: 30px;">
             <h3>Liste des employés</h3>
-            @if ($isAdmin)
-            <a class="btn btn-primary" id="addEmploye" style="display:block; margin:auto; margin margin-left:auto;margin-right:20%;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
-            @endif
             </div>
-            <div style="overflow:auto; max-height:400px;">
+            <div style="overflow:auto; max-height:400px; margin-block: 0.5rem;">
                 @php
                     /* Récupérer la liste des travailleurs travaillant dans l'entreprise pour pouvoir les réinviter */
                     $userTravaillant = $entreprise->travailler_users->unique();
@@ -118,7 +115,9 @@
                 @endforeach
                 
         </div>
-        
+        @if ($isAdmin)
+            <a class="btn btn-primary" id="addEmploye" style="margin-left:1%;"><i class="fa fa-user-plus"></i> Ajouter un(e) employé(e)</a>
+        @endif
     </div>
 
 

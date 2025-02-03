@@ -5,7 +5,10 @@
 
 @section('content')
 <div class="container">
-    <h1>Modifier mon profil</h1>
+    <div class="header-profile">
+        <h1>Modifier mon profil</h1>
+        <br/>
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -15,22 +18,32 @@
         @csrf
         @method('PUT')
 
-        <div class="mb-3">
-            <label for="nom" class="form-label">Nom</label>
-            <input type="text" id="nom" name="nom" class="form-control" value="{{ old('nom', $user->nom) }}" required>
-            @error('nom') <div class="text-danger">{{ $message }}</div> @enderror
+        <div class="row mt-3">
+            <div class="col-lg-6 mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" id="nom" name="nom" class="form-control" value="{{ old('nom', $user->nom) }}" required>
+                @error('nom') <div class="text-danger">{{ $message }}</div> @enderror
+            </div>
+
+            <div class="col-lg-6 mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" id="prenom" name="prenom" class="form-control" value="{{ old('prenom', $user->prenom) }}" required>
+                @error('prenom') <div class="text-danger">{{ $message }}</div> @enderror
+            </div>
         </div>
 
-        <div class="mb-3">
-            <label for="prenom" class="form-label">Prénom</label>
-            <input type="text" id="prenom" name="prenom" class="form-control" value="{{ old('prenom', $user->prenom) }}" required>
-            @error('prenom') <div class="text-danger">{{ $message }}</div> @enderror
-        </div>
+        <div class="row">
+            <div class="col-lg-6 mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
+                @error('email') <div class="text-danger">{{ $message }}</div> @enderror
+            </div>
 
-        <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input type="email" id="email" name="email" class="form-control" value="{{ old('email', $user->email) }}" required>
-            @error('email') <div class="text-danger">{{ $message }}</div> @enderror
+            <div class="col-lg-6 mb-3">
+                <label for="numTel" class="form-label">Numéro de téléphone</label>
+                <input type="text" id="numTel" name="numTel" class="form-control" value="{{ old('numTel', $user->numTel) }}">
+                @error('numTel') <div class="text-danger">{{ $message }}</div> @enderror
+            </div>
         </div>
 
         {{-- <div class="mb-3">
@@ -43,12 +56,6 @@
             <label for="password_confirmation" class="form-label">Confirmer le mot de passe</label>
             <input type="password" id="password_confirmation" name="password_confirmation" class="form-control">
         </div> --}}
-
-        <div class="mb-3">
-            <label for="numTel" class="form-label">Numéro de téléphone</label>
-            <input type="text" id="numTel" name="numTel" class="form-control" value="{{ old('numTel', $user->numTel) }}">
-            @error('numTel') <div class="text-danger">{{ $message }}</div> @enderror
-        </div>
 
         <div class="mb-3 d-flex align-items-center">
             <label for="typeNotif" class="form-label me-2 mb-0">Type de notification par défaut : </label>
