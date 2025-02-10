@@ -5,16 +5,27 @@
 
 
 @section('content')
+@php
+    $metiers = $entreprises->pluck('metier')->unique()->filter();
+@endphp
     <div class="container" style="margin-top:0px">
         <img class="logo-home" src="{{ asset('favicon.ico') }}" alt="Logo">
         <div class="searchbar-home">
             <input class="form-control mr-sm-2 d-block" id="search-input" type="search" placeholder="Rechercher une entreprise par libellé..." aria-label="Search">
             <button class="btn btn-secondary my-2 my-sm-0 d-block" id="rechercher"><i class="bi bi-search"></i></button>
         </div>
+        <div class="filter-bar mt-3">
+            <select id="metier-select" class="form-control">
+                <option value="">Tous les métiers</option>
+                @foreach ($metiers as $metier)
+                    <option value="{{$metier}}">{{$metier}}</option>
+                @endforeach
+            </select>
+        </div>
         <div class="container">
             @foreach ($entreprises as $entreprise)
             @if($entreprise->publier && $entreprise->activites->count() > 0)
-                <div class="row container-entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}">
+                <div class="row container-entreprise" data-libelle="{{ Str::lower($entreprise->libelle) }}" data-metier="{{ Str::lower($entreprise->metier) }}">
                     <div class="col-md-3 header-entreprise">
                     @if ($entreprise->cheminImg && count(json_decode($entreprise->cheminImg)) > 1)
                             <div class="carousel" style="display: block; margin:auto;">
@@ -68,31 +79,32 @@
         $(document).ready(function() {
             $('#rechercher').click(function() {
                 const filter = $("#search-input").val().toLowerCase();
+                const metierFilter = $("#metier-select").val().toLowerCase();
                 const entreprises = document.querySelectorAll('.container-entreprise');
 
                 entreprises.forEach(entreprise => {
                     const libelle = entreprise.getAttribute('data-libelle');
-                    // Vérifie si le libellé commence par le texte saisi
-                    if (libelle.startsWith(filter)) {
-                        entreprise.style.display = 'flex';
-                    } else {
-                        entreprise.style.display = 'none';
-                    }
+                    const metier = entreprise.getAttribute('data-metier');
+
+                    // Vérifier les conditions de filtrage
+                    const matchLibelle = filter === "" || libelle.startsWith(filter);
+                    const matchMetier = metierFilter === "" || metier === metierFilter;
+
+                    // Afficher si les deux conditions sont remplies
+                    entreprise.style.display = (matchLibelle && matchMetier) ? 'flex' : 'none';
                 });
             });
 
             $('#search-input').on('input', function() {
-                const filter = $(this).val().toLowerCase();
-                const entreprises = document.querySelectorAll('.container-entreprise');
-
-                if (filter === '') {
-                    entreprises.forEach(entreprise => {
-                        entreprise.style.display = 'flex';
-                    });
-                    return;
+                if ($(this).val() === '') {
+                    $('.container-entreprise').css('display', 'flex');
                 }
             });
-        });
+
+            $('#metier-select').on('change', function() {
+                $('#rechercher').click(); // On relance la recherche avec le filtre métier
+            });
+    });
         
     </script>
     </div>
