@@ -2,11 +2,11 @@
 
 ## À propos de DON'T FORGET ME
 
-Dans le cadre de leurs activités, de nombreux professionnels recevant des clients ont exprimés leur mécontentement face à des rendez-vous non honorés. 
-Ces absences représentent un manque à gagner considérable et nuisent à leur organisation.
-Pour répondre à ce problème, le projet Dont Forget Me vise à développer une solution complète permettant à ces professionnels :
-•    Gérer leurs rendez-vous selon leurs besoins spécifiques,
-•    Envoyer automatiquement des rappels à leurs clients par mail ou par SMS.
+Dans le cadre de leurs activités, de nombreux professionnels recevant des clients ont exprimés leur mécontentement face à des rendez-vous non honorés. <br>
+Ces absences représentent un manque à gagner considérable et nuisent à leur organisation. <br>
+Pour répondre à ce problème, le projet Dont Forget Me vise à développer une solution complète permettant à ces professionnels : <br>
+•    Gérer leurs rendez-vous selon leurs besoins spécifiques, <br>
+•    Envoyer automatiquement des rappels à leurs clients par mail ou par SMS. <br>
 
 Le projet se structure en deux volets principaux :
 1. Application web : une plateforme en ligne responsive permettant :
