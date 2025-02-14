@@ -7,7 +7,8 @@ Ces absences représentent un manque à gagner considérable et nuisent à leur 
 Pour répondre à ce problème, le projet Dont Forget Me vise à développer une solution complète permettant à ces professionnels : <br>
 •    Gérer leurs rendez-vous selon leurs besoins spécifiques, <br>
 •    Envoyer automatiquement des rappels à leurs clients par mail ou par SMS. <br>
-Le projet se structure en deux volets principaux : <br>
+
+### Le projet se structure en deux volets principaux : <br>
 1. Application web : une plateforme en ligne responsive permettant : <br>
 • l’inscription des professionnels, <br>
 • la gestion des rendez-vous et des plannings, <br>
