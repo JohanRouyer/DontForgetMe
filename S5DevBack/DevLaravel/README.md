@@ -18,3 +18,5 @@ Le projet se structure en deux volets principaux : <br>
 Ce dispositif communiquera avec l’application web pour récupérer les données des clients pour leur envoyer des notifications par mail ou par SMS afin de les inciter à honorer leur rendez-vous. <br>
 
 Ce projet vise donc à offrir une solution d’intermédiation simple et efficace entre des professionnels proposant des services et des clients souhaitant y accéder en ayant pour objectif d’améliorer l’organisation des premiers et accompagner les seconds dans leur expérience de prise de rendez-vous pour une prestation.
+
+## Installation
