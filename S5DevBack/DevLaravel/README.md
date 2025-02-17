@@ -306,10 +306,16 @@ créer le fichier pour le script:
 nano script.py
 ```
 
-Pour obtenir le token de l'api utilisez postman et un compte super admin. envoyer un POST vers nomdedomain/
+Pour obtenir le token de l'api utilisez postman et un compte super admin. envoyer un POST vers nomdedomain.com/login
 
-
- Voici le script à ajouter à votre fichier. Veuillez modifier l'adresse e-mail ainsi que le mot de passe d'application et L'api de l'url avec son token.
+body :
+```
+{
+    "email":"example@gmail.com",
+    "password": "example"
+}
+```
+Voici le script à ajouter à votre fichier. Veuillez modifier l'adresse e-mail ainsi que le mot de passe d'application et L'api de l'url avec son token.
 
  ```
 import requests
@@ -504,6 +510,19 @@ if __name__ == "__main__":
     envoyer_rappels()
     verifier_et_supprimer_anciennes_notifications()
 
+```
+
+### 2. Mise en place du cron
+
+ouvrer la crontab via la commande suivante:
+
+```
+sudo crontab -e
+```
+Ajouter la tâche cron:
+
+```
+0 */4 * * * /usr/bin/python3 /Desktop/dontforgetme/script.py
 ```
 
 
