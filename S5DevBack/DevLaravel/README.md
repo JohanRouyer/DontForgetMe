@@ -519,7 +519,7 @@ ouvrer la crontab via la commande suivante:
 ```
 sudo crontab -e
 ```
-Ajouter la tâche cron:
+Ajouter la tâche cron (ici exécution toutes les 4 heures):
 
 ```
 0 */4 * * * /usr/bin/python3 /Desktop/dontforgetme/script.py
