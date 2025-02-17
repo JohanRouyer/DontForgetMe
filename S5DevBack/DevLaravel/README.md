@@ -27,22 +27,22 @@ Ce projet vise donc à offrir une solution d’intermédiation simple et efficac
 
 Connectez-vous à votre VPS en utilisant SSH : 
 
-ssh root@votre-ip 
+```ssh root@votre-ip``` 
  
 Mettre les paquets à jour : 
 
-''' sudo apt update && sudo apt upgrade -y '''
+```sudo apt update && sudo apt upgrade -y```
  
 
 ### 2. Installation de Nginx 
 
 Installez Nginx : 
 
-sudo apt install nginx -y 
+```sudo apt install nginx -y```
 
 Vérifiez que Nginx fonctionne : 
 
-systemctl status nginx 
+```systemctl status nginx``` 
 
 Accédez à votre serveur via l’adresse IP pour vérifier l’installation nginx par défaut. 
 
@@ -54,62 +54,62 @@ Testez la résolution DNS (peut prendre entre 2h a 24h):
 
 https://dnschecker.org/ 
 
-ping votre-domaine.com 
+```ping votre-domaine.com``` 
  
 ### 4. Mise en place des certificats SSL (Let's Encrypt) 
 
 Installez Certbot et son plugin pour Nginx : 
 
-sudo apt install certbot python3-certbot-nginx -y 
+```sudo apt install certbot python3-certbot-nginx -y```
  
 Générez et appliquez un certificat SSL : 
 
-sudo certbot --nginx -d votre-domaine.com -d www.votre-domaine.com 
+```sudo certbot --nginx -d votre-domaine.com -d www.votre-domaine.com``` 
  
 Testez le renouvellement automatique : 
 
-sudo certbot renew --dry-run 
+```sudo certbot renew --dry-run``` 
  
 ### 5. Suppression du site par défaut 
 
 Désactivez la configuration par défaut : 
-
+```
 sudo rm /etc/nginx/sites-enabled/default 
 sudo rm /etc/nginx/sites-available/default 
-
+```
 Redémarrez Nginx pour appliquer les changements :  
 
-sudo systemctl restart nginx 
+```sudo systemctl restart nginx``` 
  
 ### 6. Cloner le projet Laravel 
 
 Accédez au dossier où vous souhaitez cloner le projet : 
 
-cd /var/www/ 
+```cd /var/www/``` 
  
 Installer et Clonez le dépôt Git : 
 
+```
 sudo apt install git -y  
-
 git clone https://github.com/JohanRouyer/DontForgetMe.git 
- 
+```
 Naviguez dans le dossier du projet backend : 
 
-cd DontForgetMe/S5DevBack/DevLaravel/ 
+```cd DontForgetMe/S5DevBack/DevLaravel/``` 
  
 ### 7. Installer les dépendances Laravel 
 
 Installez Composer si ce n’est pas encore fait : 
 
-sudo apt install composer -y 
+```sudo apt install composer -y``` 
  
 Installez les dépendances du projet : 
 
-composer install 
+```composer install``` 
  
 Installez les extensions manquantes avec la commande suivante : 
 
-
+```
 sudo apt update 
 
 sudo apt install php8.3-fpm 
@@ -119,43 +119,43 @@ sudo systemctl enable php8.3-fpm
 sudo apt install php8.3-xml 
 
 sudo apt install php8.3-mysql 
- 
+ ```
 Générez une clé d’application Laravel : 
 
-php artisan key:generate 
+```php artisan key:generate``` 
  
 ### 8. Configurer la base de données 
 
-sudo apt install mysql-server -y 
+```sudo apt install mysql-server -y``` 
 
 #### 1. Connectez-vous à MySQL avec un utilisateur ayant les privilèges appropriés (par exemple, root) : 
 
-mysql -u root -p 
+```mysql -u root -p``` 
  
 
 ##### 2. Créez la base de données. Utilisez le même nom que celui spécifié dans votre fichier .env (dans cet exemple : bd_dfm) : 
 
-CREATE DATABASE bd_dfm; 
+```CREATE DATABASE bd_dfm;``` 
 
 #### 3. Créez un utilisateur MySQL dédié et attribuez-lui des droits : 
-
+```
 CREATE USER 'laravel_user'@'localhost' IDENTIFIED BY 'mot_de_passe'; 
 GRANT ALL PRIVILEGES ON bd_dfm.* TO 'laravel_user'@'localhost'; 
 FLUSH PRIVILEGES; 
- 
+ ```
 
 Remplacez laravel_user et mot_de_passe par vos propres valeurs. 
 
 #### 4. Quittez MySQL : 
 
-EXIT; 
+```EXIT;``` 
 
 
 Modifiez le fichier .env pour configurer les informations de connexion à la base de données . 
 
 Exemple de configuration dans le fichier .env : 
 
-
+```
 APP_NAME=Laravel APP_ENV=local APP_KEY=base64:vSaIcedhMRoXcZ4bX0pG6Oa/eb3Q/6D6ErC6uiVBV7s= APP_DEBUG=true APP_URL=https://dontforgetme.online 
 
 LOG_CHANNEL=stack LOG_DEPRECATIONS_CHANNEL=null LOG_LEVEL=debug 
@@ -173,22 +173,22 @@ AWS_ACCESS_KEY_ID= AWS_SECRET_ACCESS_KEY= AWS_DEFAULT_REGION=us-east-1 AWS_BUCKE
 PUSHER_APP_ID= PUSHER_APP_KEY= PUSHER_APP_SECRET= PUSHER_APP_CLUSTER=mt1 
 
 VITE_APP_NAME="${APP_NAME}" 
-
+```
  
 
 Appliquez les migrations pour créer les tables nécessaires : 
 
-php artisan migrate 
+```php artisan migrate``` 
  
 
 ### 9. Configurer Nginx pour le projet Laravel 
 
 Créez un nouveau fichier de configuration Nginx : 
 
-sudo nano /etc/nginx/sites-available/dontforgetme 
+```sudo nano /etc/nginx/sites-available/dontforgetme ```
  
 Ajoutez la configuration suivante : 
-
+```
 server { listen 443 ssl; server_name dontforgetme.online www.dontforgetme.online; 
 
 ssl_certificate /etc/letsencrypt/live/dontforgetme.online/fullchain.pem; 
@@ -214,31 +214,31 @@ location ~ /\.ht {
   
 
 } 
-
+```
 Activez la configuration et redémarrez Nginx : 
-
+```
 sudo ln -s /etc/nginx/sites-available/dontforgetme /etc/nginx/sites-enabled/ 
 sudo systemctl restart nginx 
- 
+ ```
 ### 10. Configurer les permissions 
 
 Laravel nécessite que certains dossiers aient les bonnes permissions pour fonctionner correctement (notamment les dossiers storage et bootstrap/cache) : 
-
+```
 sudo chown -R www-data:www-data /var/www/DontForgetMe/S5DevBack/DevLaravel 
 sudo chmod -R 775 /var/www/DontForgetMe/S5DevBack/DevLaravel/storage 
 sudo chmod -R 775 /var/www/DontForgetMe/S5DevBack/DevLaravel/bootstrap/cache 
- 
+ ```
 ### 11. Activer SSL (Let's Encrypt) 
 
 Installez Certbot si ce n’est pas fait : 
 
-sudo apt install certbot python3-certbot-nginx -y 
+```sudo apt install certbot python3-certbot-nginx -y ```
  
 Activez SSL pour le domaine : 
 
-sudo certbot --nginx -d votre-domaine.com -d www.votre-domaine.com 
+```sudo certbot --nginx -d votre-domaine.com -d www.votre-domaine.com ```
  
 Vérifiez que le certificat est actif : 
 
-sudo certbot renew --dry-run 
+```sudo certbot renew --dry-run ```
 
