@@ -19,9 +19,7 @@ Ce dispositif communiquera avec l’application web pour récupérer les donnée
 
 Ce projet vise donc à offrir une solution d’intermédiation simple et efficace entre des professionnels proposant des services et des clients souhaitant y accéder en ayant pour objectif d’améliorer l’organisation des premiers et accompagner les seconds dans leur expérience de prise de rendez-vous pour une prestation.
 
-## Installation
-
-### installation VPS
+## Installation VPS
 
 ### 1. Connexion au VPS(ubuntu 24.04 LTS (Noble Numbat) + SSH) via SSH 
 
@@ -287,4 +285,225 @@ Vérifiez que le certificat est actif :
 ```
 sudo certbot renew --dry-run
 ```
+
+## Installation Raspberry Pi
+
+### 1. Créer un fichier script.py
+
+Ouvrir le terminal
+Sur votre Raspberry Pi, ouvrez le terminal (l'invite de commande).
+
+Accéder au répertoire souhaité
+exemple :
+
+```
+cd Desktop/DontForgetMe
+```
+
+créer le fichier pour le script:
+
+```
+nano script.py
+```
+
+Pour obtenir le token de l'api utilisez postman et un compte super admin. envoyer un POST vers nomdedomain/
+
+
+ Voici le script à ajouter à votre fichier. Veuillez modifier l'adresse e-mail ainsi que le mot de passe d'application et L'api de l'url avec son token.
+
+ ```
+import requests
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from datetime import datetime, timedelta
+import certifi
+import serial
+import time
+
+# =====================
+# Configurations
+# =====================
+
+# URL de l'API pour récupérer les détails des rendez-vous
+API_URL = "https://nomdedomaine.com/api/details"
+# Jeton d'authentification pour l'API
+TOKEN = "1|tokendauthentification"
+
+# Configuration SMTP pour l'envoi d'emails
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+SMTP_EMAIL = "example@gmail.com"
+SMTP_PASSWORD = "xxxx xxxx xxxx xxxx" # mot de passe d'application (via compte google)
+
+# Configuration du modem pour l'envoi de SMS
+MODEM_PORT = '/dev/ttyS0' #port du modem
+BAUDRATE = 115200
+
+# =====================
+# Fonctions utilitaires
+# =====================
+
+# Fonction pour envoyer un e-mail
+# @param destinataire: Adresse e-mail du destinataire
+# @param sujet: Sujet de l'e-mail
+# @param corps: Contenu de l'e-mail
+def envoyer_email(destinataire, sujet, corps):
+    try:
+        # Création de l'e-mail
+        msg = MIMEMultipart()
+        msg["From"] = SMTP_EMAIL
+        msg["To"] = destinataire
+        msg["Subject"] = sujet
+        msg.attach(MIMEText(corps, "plain"))
+
+        # Connexion au serveur SMTP et envoi de l'e-mail
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+            server.starttls()
+            server.login(SMTP_EMAIL, SMTP_PASSWORD)
+            server.send_message(msg)
+
+        print(f"[OK] E-mail envoyé à {destinataire}.")
+    except Exception as e:
+        print(f"[ERREUR] Échec de l'envoi de l'e-mail à {destinataire} : {e}")
+
+# Fonction pour envoyer un SMS
+# @param numero: Numéro de téléphone du destinataire
+# @param message: Contenu du SMS
+def envoyer_sms(numero, message):
+    try:
+        # Connexion au modem via le port série
+        modem = serial.Serial(MODEM_PORT, BAUDRATE, timeout=1)
+
+        # Fonction interne pour envoyer une commande AT
+        def send_at_command(command, delay=1):
+            modem.write((command + '\r').encode())
+            time.sleep(delay)
+            response = modem.read(modem.inWaiting()).decode()
+            if "+CMS ERROR" in response:
+                raise Exception(f"Erreur du modem : {response}")
+            return response
+
+        # Initialisation et envoi du message
+        send_at_command('AT')
+        send_at_command('AT+CMGF=1')  # Mode texte pour les SMS
+        send_at_command(f'AT+CMGS="{numero}"')
+        modem.write((message + chr(26)).encode())  # Fin du message avec Ctrl+Z
+        time.sleep(10)
+
+        print(f"[OK] SMS envoyé à {numero}.")
+        modem.close()
+    except Exception as e:
+        print(f"[ERREUR] Échec de l'envoi du SMS à {numero} : {e}")
+
+# Fonction pour convertir des heures en timedelta
+# @param hours: Nombre d'heures à convertir
+def convertir_time_en_timedelta(hours):
+    return timedelta(hours=hours)
+
+# =====================
+# Logique principale
+# =====================
+
+# Fonction principale pour envoyer des rappels
+def envoyer_rappels():
+    try:
+        # Configuration des en-têtes pour l'API
+        headers = {
+            "Authorization": f"Bearer {TOKEN}",
+            "Content-Type": "application/json"
+        }
+
+        # Récupération des données de l'API
+        response = requests.get(API_URL, headers=headers, verify=certifi.where())
+        if response.status_code != 200:
+            print(f"[ERREUR] Impossible de récupérer les données. Code HTTP: {response.status_code}")
+            return
+
+        data = response.json()
+        print("Traitement des notifications :")
+
+        # Traitement de chaque rendez-vous
+        for rdv in data:
+            if rdv["notifEtat"] == 0:  # Vérifie si la notification n'a pas encore été envoyée
+                # Calcul du délai avant notification
+                delaiAvantNotif = convertir_time_en_timedelta(rdv["notifDelaiAvantNotif"])
+                rdv_datetime = datetime.strptime(f"{rdv['dateRendezVous']} {rdv['heureRendezVous']}", "%Y-%m-%d %H:%M:%S")
+                maintenant = datetime.now()
+                seuil_notification = rdv_datetime - delaiAvantNotif
+
+                # Vérifie si le moment d'envoyer la notification est arrivé
+                if seuil_notification <= maintenant <= rdv_datetime:
+                    if rdv["notifCategorie"].lower() == "mail":
+                        envoyer_email(
+                            rdv["userEmail"],
+                            "Rappel de rendez-vous",
+                            f"Bonjour {rdv['userPrenom']} {rdv['userNom']},\n\n"
+                            f"Rappel pour votre rendez-vous avec {rdv['entrepriseNom']}.\n"
+                            f"Date et heure : {rdv['dateRendezVous']} à {rdv['heureRendezVous']}.\n"
+                            f"Modifier rendez-vous : https://dontforgetme.online/reserver/{rdv['notifId']}.\n"
+                            "Merci."
+                        )
+                    elif rdv["notifCategorie"].lower() == "sms":
+                        envoyer_sms(
+                            rdv["userNumTel"],
+                            f"Rappel RDV: {rdv['entrepriseNom']}, {rdv['dateRendezVous']} {rdv['heureRendezVous']}."
+                        )
+
+                    # Mise à jour de l'état de la notification via une requête PATCH
+                    patch_url = f"{API_URL}/{rdv['notifId']}"
+                    payload = {"etat": 1}
+                    patch_response = requests.patch(patch_url, headers=headers, json=payload, verify=certifi.where())
+                    if patch_response.status_code == 200:
+                        print(f"[OK] Notification {rdv['notifId']} mise à jour.")
+                    else:
+                        print(f"[ERREUR] Échec mise à jour notification {rdv['notifId']}.")
+    except Exception as e:
+        print(f"[ERREUR] Problème lors du traitement des rappels : {e}")
+
+def supprimer_notification(notif_id):
+    try:
+        headers = {
+            "Authorization": f"Bearer {TOKEN}",
+            "Content-Type": "application/json"
+        }
+        delete_url = f"{API_URL}/{notif_id}"
+        response = requests.delete(delete_url, headers=headers, verify=certifi.where())
+        if response.status_code == 200:
+            print(f"[OK] Notification {notif_id} supprimée.")
+        else:
+            print(f"[ERREUR] Impossible de supprimer la notification {notif_id}. Code HTTP: {response.status_code}")
+    except Exception as e:
+        print(f"[ERREUR] Échec de suppression de la notification {notif_id} : {e}")
+
+
+def verifier_et_supprimer_anciennes_notifications():
+    try:
+        headers = {
+            "Authorization": f"Bearer {TOKEN}",
+            "Content-Type": "application/json"
+        }
+        response = requests.get(API_URL, headers=headers, verify=certifi.where())
+        if response.status_code != 200:
+            print(f"[ERREUR] Impossible de récupérer les notifications. Code HTTP: {response.status_code}")
+            return
+
+        data = response.json()
+        maintenant = datetime.now()
+        seuil_passe = maintenant - timedelta(days=10)
+
+        for rdv in data:
+            rdv_datetime = datetime.strptime(f"{rdv['dateRendezVous']} {rdv['heureRendezVous']}", "%Y-%m-%d %H:%M:%S")
+            if rdv["notifEtat"] == 1 and rdv_datetime < seuil_passe:
+                supprimer_notification(rdv["notifId"])
+    except Exception as e:
+        print(f"[ERREUR] Problème lors de la vérification des anciennes notifications : {e}")
+
+
+if __name__ == "__main__":
+    envoyer_rappels()
+    verifier_et_supprimer_anciennes_notifications()
+
+```
+
 
