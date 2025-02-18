@@ -524,5 +524,11 @@ Ajouter la tâche cron (ici exécution toutes les 4 heures):
 ```
 0 */4 * * * /usr/bin/python3 /Desktop/dontforgetme/script.py
 ```
+## Merci d’avoir installé DON'T FORGET ME !
 
+Nous vous remercions pour votre confiance et votre intérêt pour notre solution. Grâce à DON'T FORGET ME, vous pourrez désormais gérer vos rendez-vous en toute simplicité, tout en réduisant les absences !
+Notre objectif est de vous accompagner dans l’optimisation de votre organisation et dans la satisfaction de vos clients.
+Si vous avez des questions, des suggestions ou besoin d’aide, notre équipe reste à votre disposition. N’hésitez pas à nous contacter !
+Bonne gestion et à bientôt !
+– L’équipe DON'T FORGET ME
 
