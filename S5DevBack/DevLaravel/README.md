@@ -315,7 +315,7 @@ body :
     "password": "example"
 }
 ```
-Voici le script à ajouter à votre fichier. Veuillez modifier l'adresse e-mail ainsi que le mot de passe d'application et L'api de l'url avec son token.
+Voici le script à ajouter à votre fichier. Veuillez modifier l'adresse e-mail ainsi que le mot de passe d'application et L'url de l'API avec son token.
 
  ```
 import requests
