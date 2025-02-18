@@ -535,9 +535,9 @@ Si vous avez des questions, des suggestions ou besoin d’aide, notre équipe re
 Bonne gestion et à bientôt !
 
 – L’équipe DON'T FORGET ME
-
-ROUYER Johan
-AUDOUARD Raphaël 
-GUIHENEUF Mattin
-MOURGUE Clément 
-VICTORAS Dylan
+ <br>
+ROUYER Johan <br>
+AUDOUARD Raphaël  <br>
+GUIHENEUF Mattin <br>
+MOURGUE Clément  <br>
+VICTORAS Dylan <br>
